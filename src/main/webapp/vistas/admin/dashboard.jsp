@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.sergiocalderon.modelo.Usuario" %>
 <%
-    Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioSesion");
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario"); // ← CAMBIO AQUÍ
     if (usuarioSesion == null || 
         !usuarioSesion.getTipoUsuario().equals("ADMIN")) {
         response.sendRedirect(request.getContextPath() + 
-            "/vistas/auth/login.jsp");
+            "/auth/login"); // ← Usa la ruta Spring, no la JSP directa
         return;
     }
 %>
@@ -287,11 +287,11 @@
     <a href="<%= request.getContextPath() %>/vistas/admin/gestionCitas.jsp"><i class="fa-regular fa-calendar"></i> Gestión de Citas</a>
     <a href="<%= request.getContextPath() %>/vistas/admin/gestionUsuarios.jsp">
         <i class="fa-solid fa-users"></i> Administrar Usuarios</a>
-    <a href="<%= request.getContextPath() %>/vistas/admin/gestionHorarios.jsp">
+    <a href="<%= request.getContextPath() %>/admin/gestionHorarios">">
         <i class="fa-regular fa-clock"></i> Administrar Horas</a>
     <a href="<%= request.getContextPath() %>/vistas/admin/gestionCatalogo.jsp">
         <i class="fa-solid fa-shirt"></i> Administrar Catálogo</a>
-    <a href="<%= request.getContextPath() %>/logout">
+    <a href="<%= request.getContextPath() %>/auth/logout">
         <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
 </div>
 
@@ -314,14 +314,14 @@
             <i class="fa-solid fa-users"></i> Administrar Usuarios
         </a>
         <a href="<%= request.getContextPath() 
-                 %>/vistas/admin/gestionHorarios.jsp">
+                 %>/admin/gestionHorarios">
             <i class="fa-regular fa-clock"></i> Administrar Horas
         </a>
         <a href="<%= request.getContextPath() 
                  %>/vistas/admin/gestionCatalogo.jsp">
             <i class="fa-solid fa-shirt"></i> Administrar Catálogo
         </a>
-        <a href="<%= request.getContextPath() %>/logout">
+        <a href="<%= request.getContextPath() %>/auth/logout">
             <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
         </a>
     </div>
@@ -384,7 +384,7 @@
                 </div>
             </a>
             <a href="<%= request.getContextPath() 
-                     %>/vistas/admin/gestionHorarios.jsp"
+                     %>/admin/gestionHorarios"
                class="acceso-card">
                 <div class="acceso-icono">
     <i class="fa-regular fa-clock fa-xl"></i>
