@@ -3,12 +3,10 @@
 <%@ page import="com.sergiocalderon.modelo.Disponibilidad" %>
 <%@ page import="java.util.List" %>
 <%
-    Usuario usuarioSesion = (Usuario) session.getAttribute(
-        "usuarioSesion");
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
     if (usuarioSesion == null ||
         !usuarioSesion.getTipoUsuario().equals("ADMIN")) {
-        response.sendRedirect(request.getContextPath() +
-            "/vistas/auth/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/auth/login");
         return;
     }
     List<Disponibilidad> lista = (List<Disponibilidad>)
@@ -256,93 +254,93 @@
         }
         .btn-guardar:hover { background: #5C3D2E; }
 
-        /* CARRUSEL POR DÍA */
-.fechas-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    background: var(--fondo);
-    padding: 10px 15px;
-    border-radius: 4px;
-}
-.btn-nav {
-    background: #fff;
-    border: 1px solid #D4B896;
-    color: var(--oscuro);
-    width: 35px; height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-}
-.btn-nav:hover {
-    background: var(--oscuro);
-    color: #fff;
-    border-color: var(--oscuro);
-}
-.btn-nav:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-.fecha-actual {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--oscuro);
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.dia-contador {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #999;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-}
-.horarios-dia-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-.horario-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 15px;
-    background: #fdfaf7;
-    border: 1px solid #D4B896;
-    border-radius: 4px;
-    transition: background 0.2s;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.horario-item:hover { background: var(--fondo); }
-.horario-tiempo {
-    font-weight: 700;
-    color: var(--oscuro);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 150px;
-}
-.horario-cupos {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.horario-acciones {
-    display: flex;
-    gap: 6px;
-}
+        /* CARRUSEL POR DÍA - VERSIÓN SIMPLIFICADA */
+        .fechas-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            background: var(--fondo);
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        .btn-nav {
+            background: #fff;
+            border: 1px solid #D4B896;
+            color: var(--oscuro);
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-nav:hover {
+            background: var(--oscuro);
+            color: #fff;
+            border-color: var(--oscuro);
+        }
+        .btn-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .fecha-actual {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--oscuro);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dia-contador {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .horarios-dia-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .horario-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: #fdfaf7;
+            border: 1px solid #D4B896;
+            border-radius: 4px;
+            transition: background 0.2s;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .horario-item:hover { background: var(--fondo); }
+        .horario-tiempo {
+            font-weight: 700;
+            color: var(--oscuro);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px;
+        }
+        .horario-cupos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .horario-acciones {
+            display: flex;
+            gap: 6px;
+        }
 
         /* TABLA */
         .tabla-sc {
@@ -460,11 +458,8 @@
 
 <!-- NAVBAR -->
 <nav class="navbar-sc">
-    <a href="<%= request.getContextPath() 
-             %>/vistas/admin/dashboard.jsp"
-       class="navbar-brand-sc">
-        <img src="<%= request.getContextPath() %>/img/logo.png"
-             alt="Logo" class="logo-img">
+    <a href="<%= request.getContextPath() %>/admin/dashboard" class="navbar-brand-sc">
+        <img src="<%= request.getContextPath() %>/img/logo.png" alt="Logo" class="logo-img">
         <div class="brand-text">
             <div class="nombre">SERGIO CALDERÓN</div>
             <div class="subtitulo">Diseñador de Moda</div>
@@ -472,41 +467,19 @@
     </a>
     <div class="navbar-derecha">
         <span class="badge-admin">Administración</span>
-        <span class="nombre-usuario">
-            <%= usuarioSesion.getNombre() %>
-        </span>
-        <button class="btn-menu" onclick="toggleMenu()">
-            <i class="fa-solid fa-bars"></i>
-        </button>
+        <span class="nombre-usuario"><%= usuarioSesion.getNombre() %></span>
+        <button class="btn-menu" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
     </div>
 </nav>
 
 <!-- DROPDOWN -->
 <div class="dropdown-menu-sc" id="dropdownMenu">
-    <a href="<%= request.getContextPath() 
-             %>/vistas/admin/dashboard.jsp">
-        <i class="fa-solid fa-house"></i> Inicio
-    </a>
-    <a href="<%= request.getContextPath() 
-             %>/vistas/admin/gestionCitas.jsp">
-        <i class="fa-regular fa-calendar"></i> Gestión de Citas
-    </a>
-    <a href="<%= request.getContextPath() 
-             %>/vistas/admin/gestionUsuarios.jsp">
-        <i class="fa-solid fa-users"></i> Administrar Usuarios
-    </a>
-    <a href="<%= request.getContextPath() 
-             %>/admin/horarios" class="activo">
-        <i class="fa-regular fa-clock"></i> Administrar Horas
-    </a>
-    <a href="<%= request.getContextPath() 
-             %>/vistas/admin/gestionCatalogo.jsp">
-        <i class="fa-solid fa-shirt"></i> Administrar Catálogo
-    </a>
-    <a href="<%= request.getContextPath() %>/logout">
-        <i class="fa-solid fa-right-from-bracket"></i> 
-        Cerrar Sesión
-    </a>
+    <a href="<%= request.getContextPath() %>/admin/dashboard"><i class="fa-solid fa-house"></i> Inicio</a>
+    <a href="<%= request.getContextPath() %>/admin/gestionCitas"><i class="fa-regular fa-calendar"></i> Gestión de Citas</a>
+    <a href="<%= request.getContextPath() %>/admin/gestionUsuarios"><i class="fa-solid fa-users"></i> Administrar Usuarios</a>
+    <a href="<%= request.getContextPath() %>/admin/horarios" class="activo"><i class="fa-regular fa-clock"></i> Administrar Horas</a>
+    <a href="<%= request.getContextPath() %>/admin/gestionCatalogo"><i class="fa-solid fa-shirt"></i> Administrar Catálogo</a>
+    <a href="<%= request.getContextPath() %>/auth/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
 </div>
 
 <!-- LAYOUT -->
@@ -515,53 +488,26 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-titulo">Panel Admin</div>
-        <a href="<%= request.getContextPath() 
-                 %>/vistas/admin/dashboard.jsp">
-            <i class="fa-solid fa-house"></i> Inicio
-        </a>
-        <a href="<%= request.getContextPath() 
-                 %>/vistas/admin/gestionCitas.jsp">
-            <i class="fa-regular fa-calendar"></i> Gestión de Citas
-        </a>
-        <a href="<%= request.getContextPath() 
-                 %>/vistas/admin/gestionUsuarios.jsp">
-            <i class="fa-solid fa-users"></i> Administrar Usuarios
-        </a>
-        <a href="<%= request.getContextPath() 
-                 %>/admin/horarios" class="activo">
-            <i class="fa-regular fa-clock"></i> Administrar Horas
-        </a>
-        <a href="<%= request.getContextPath() 
-                 %>/vistas/admin/gestionCatalogo.jsp">
-            <i class="fa-solid fa-shirt"></i> Administrar Catálogo
-        </a>
-        <a href="<%= request.getContextPath() %>/logout">
-            <i class="fa-solid fa-right-from-bracket"></i> 
-            Cerrar Sesión
-        </a>
+        <a href="<%= request.getContextPath() %>/admin/dashboard"><i class="fa-solid fa-house"></i> Inicio</a>
+        <a href="<%= request.getContextPath() %>/admin/gestionCitas"><i class="fa-regular fa-calendar"></i> Gestión de Citas</a>
+        <a href="<%= request.getContextPath() %>/admin/gestionUsuarios"><i class="fa-solid fa-users"></i> Administrar Usuarios</a>
+        <a href="<%= request.getContextPath() %>/admin/horarios" class="activo"><i class="fa-regular fa-clock"></i> Administrar Horas</a>
+        <a href="<%= request.getContextPath() %>/admin/gestionCatalogo"><i class="fa-solid fa-shirt"></i> Administrar Catálogo</a>
+        <a href="<%= request.getContextPath() %>/auth/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
     </div>
 
     <!-- CONTENIDO -->
     <div class="main-content">
         <h1 class="page-titulo">
-            <i class="fa-regular fa-clock"></i>
-            Gestión de Horarios
+            <i class="fa-regular fa-clock"></i> Gestión de Horarios
         </h1>
-        <p class="page-subtitulo">
-            Configura los horarios disponibles para citas
-        </p>
+        <p class="page-subtitulo">Configura los horarios disponibles para citas</p>
 
         <% if (request.getAttribute("error") != null) { %>
-            <div class="alert-error">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <%= request.getAttribute("error") %>
-            </div>
+            <div class="alert-error"><i class="fa-solid fa-circle-exclamation"></i> <%= request.getAttribute("error") %></div>
         <% } %>
         <% if (request.getAttribute("exito") != null) { %>
-            <div class="alert-exito">
-                <i class="fa-solid fa-circle-check"></i>
-                <%= request.getAttribute("exito") %>
-            </div>
+            <div class="alert-exito"><i class="fa-solid fa-circle-check"></i> <%= request.getAttribute("exito") %></div>
         <% } %>
 
         <div class="content-grid">
@@ -571,345 +517,208 @@
                 <div class="card-sc">
                     <div class="card-titulo">
                         <i class="fa-regular fa-calendar-plus"></i>
-                        <%= editar != null ? 
-                            "Editar Horario" : "Crear Horarios" %>
+                        <%= editar != null ? "Editar Horario" : "Crear Horarios" %>
                     </div>
 
                     <% if (editar != null) { %>
                     <!-- FORMULARIO EDITAR -->
-                    <form method="post"
-                          action="<%= request.getContextPath() 
-                                   %>/admin/horarios">
-                        <input type="hidden" name="accion"
-                               value="actualizar">
-                        <input type="hidden" name="id"
-                               value="<%= editar.getIdDisponibilidad() %>">
+                    <form method="post" action="<%= request.getContextPath() %>/admin/horarios">
+                        <input type="hidden" name="accion" value="actualizar">
+                        <input type="hidden" name="id" value="<%= editar.getIdDisponibilidad() %>">
 
                         <label class="form-label-sc">Fecha</label>
-                        <input type="date" name="fecha"
-                               class="form-control-sc"
-                               value="<%= editar.getFecha() %>"
-                               required>
+                        <input type="date" name="fecha" class="form-control-sc" value="<%= editar.getFecha() %>" required>
 
                         <div class="fila-dos">
                             <div>
-                                <label class="form-label-sc">
-                                    Hora inicio
-                                </label>
-                                <input type="time" name="horaInicio"
-                                       class="form-control-sc"
-                                       value="<%= editar.getHoraInicio() %>"
-                                       required>
+                                <label class="form-label-sc">Hora inicio</label>
+                                <input type="time" name="horaInicio" class="form-control-sc" value="<%= editar.getHoraInicio() %>" required>
                             </div>
                             <div>
-                                <label class="form-label-sc">
-                                    Hora fin
-                                </label>
-                                <input type="time" name="horaFin"
-                                       class="form-control-sc"
-                                       value="<%= editar.getHoraFin() %>"
-                                       required>
+                                <label class="form-label-sc">Hora fin</label>
+                                <input type="time" name="horaFin" class="form-control-sc" value="<%= editar.getHoraFin() %>" required>
                             </div>
                         </div>
 
-                        <label class="form-label-sc">
-                            Cupos totales
-                        </label>
-                        <input type="number" name="cupos"
-                               class="form-control-sc"
-                               value="<%= editar.getCuposTotales() %>"
-                               min="1" required>
+                        <label class="form-label-sc">Cupos totales</label>
+                        <input type="number" name="cupos" class="form-control-sc" value="<%= editar.getCuposTotales() %>" min="1" required>
 
                         <label class="form-label-sc">
-                            <input type="checkbox" name="disponible"
-                                   <%= editar.isDisponible() ? 
-                                       "checked" : "" %>>
-                            &nbsp;Disponible
+                            <input type="checkbox" name="disponible" <%= editar.isDisponible() ? "checked" : "" %>> &nbsp;Disponible
                         </label>
                         <br><br>
 
-                        <button type="submit" class="btn-guardar">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            Guardar Cambios
-                        </button>
+                        <button type="submit" class="btn-guardar"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
                     </form>
                     <% } else { %>
                     <!-- FORMULARIO CREAR -->
-                    <form method="post"
-                          action="<%= request.getContextPath() 
-                                   %>/admin/horarios">
-                        <input type="hidden" name="accion"
-                               value="crear">
+                    <form method="post" action="<%= request.getContextPath() %>/admin/horarios">
+                        <input type="hidden" name="accion" value="crear">
 
                         <label class="form-label-sc">Fecha</label>
-                        <input type="date" name="fecha"
-                               class="form-control-sc"
-                               min="<%= java.time.LocalDate.now() %>"
-                               required>
+                        <input type="date" name="fecha" class="form-control-sc" min="<%= java.time.LocalDate.now() %>" required>
 
                         <div class="fila-dos">
                             <div>
-                                <label class="form-label-sc">
-                                    Hora desde
-                                </label>
-                                <input type="time" name="horaDesde"
-                                       class="form-control-sc"
-                                       value="07:00" required>
+                                <label class="form-label-sc">Hora desde</label>
+                                <input type="time" name="horaDesde" class="form-control-sc" value="07:00" required>
                             </div>
                             <div>
-                                <label class="form-label-sc">
-                                    Hora hasta
-                                </label>
-                                <input type="time" name="horaHasta"
-                                       class="form-control-sc"
-                                       value="17:00" required>
+                                <label class="form-label-sc">Hora hasta</label>
+                                <input type="time" name="horaHasta" class="form-control-sc" value="17:00" required>
                             </div>
                         </div>
 
-                        <label class="form-label-sc">
-                            Intervalo (minutos)
-                        </label>
-                        <select name="intervalo"
-                                class="form-control-sc">
+                        <label class="form-label-sc">Intervalo (minutos)</label>
+                        <select name="intervalo" class="form-control-sc">
                             <option value="30">30 minutos</option>
-                            <option value="60" selected>
-                                60 minutos
-                            </option>
+                            <option value="60" selected>60 minutos</option>
                             <option value="90">90 minutos</option>
                             <option value="120">120 minutos</option>
                         </select>
 
-                        <label class="form-label-sc">
-                            Cupos por horario
-                        </label>
-                        <input type="number" name="cupos"
-                               class="form-control-sc"
-                               value="1" min="1" max="10">
+                        <label class="form-label-sc">Cupos por horario</label>
+                        <input type="number" name="cupos" class="form-control-sc" value="1" min="1" max="10">
 
-                        <button type="submit" class="btn-guardar">
-                            <i class="fa-regular fa-calendar-plus"></i>
-                            Generar Horarios
-                        </button>
+                        <button type="submit" class="btn-guardar"><i class="fa-regular fa-calendar-plus"></i> Generar Horarios</button>
                     </form>
                     <% } %>
                 </div>
             </div>
 
-            <!-- HORARIOS POR DÍA -->
-<div class="card-sc">
-    <div class="card-titulo">
-        <i class="fa-solid fa-list"></i>
-        Horarios Registrados
-    </div>
+            <!-- HORARIOS POR DÍA - VERSIÓN SIMPLIFICADA -->
+            <div class="card-sc">
+                <div class="card-titulo"><i class="fa-solid fa-list"></i> Horarios Registrados</div>
 
-    <% if (lista != null && !lista.isEmpty()) { %>
+                <% if (lista != null && !lista.isEmpty()) { 
+                    // Agrupar por fecha
+                    java.util.Map<String, java.util.List<Disponibilidad>> porFecha = new java.util.LinkedHashMap<>();
+                    for (Disponibilidad d : lista) {
+                        String fechaKey = d.getFecha().toString();
+                        if (!porFecha.containsKey(fechaKey)) {
+                            porFecha.put(fechaKey, new java.util.ArrayList<>());
+                        }
+                        porFecha.get(fechaKey).add(d);
+                    }
+                    java.util.List<String> fechas = new java.util.ArrayList<>(porFecha.keySet());
+                %>
 
-    <%-- Agrupar por fecha --%>
-    <%
-        java.util.Map<String, java.util.List<Disponibilidad>> 
-            porFecha = new java.util.LinkedHashMap<>();
-        for (Disponibilidad d : lista) {
-            String fechaKey = d.getFecha().toString();
-            if (!porFecha.containsKey(fechaKey)) {
-                porFecha.put(fechaKey, 
-                    new java.util.ArrayList<>());
-            }
-            porFecha.get(fechaKey).add(d);
-        }
-        java.util.List<String> fechas = 
-            new java.util.ArrayList<>(porFecha.keySet());
-    %>
-
-    <!-- NAVEGACIÓN FECHAS -->
-    <div class="fechas-nav">
-        <button class="btn-nav" onclick="anteriorDia()"
-                id="btnAnterior">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div class="fecha-actual" id="fechaActual">
-            <i class="fa-regular fa-calendar"></i>
-            <span id="textoFecha"></span>
-        </div>
-        <button class="btn-nav" onclick="siguienteDia()"
-                id="btnSiguiente">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
-    </div>
-
-    <!-- CONTADOR -->
-    <div class="dia-contador" id="diaContador"></div>
-
-    <!-- SLIDES POR DÍA -->
-    <div class="slides-container">
-        <%
-            int diaIndex = 0;
-            for (java.util.Map.Entry<String, 
-                 java.util.List<Disponibilidad>> 
-                 entry : porFecha.entrySet()) {
-        %>
-        <div class="slide-dia" id="dia_<%= diaIndex %>"
-             style="display: <%= diaIndex == 0 ? 
-                                 "block" : "none" %>">
-            <div class="horarios-dia-grid">
-                <% for (Disponibilidad d : entry.getValue()) { %>
-                <div class="horario-item">
-                    <div class="horario-tiempo">
-                        <i class="fa-regular fa-clock"></i>
-                        <%= d.getHoraInicio().toString()
-                             .substring(0,5) %> —
-                        <%= d.getHoraFin().toString()
-                             .substring(0,5) %>
+                <!-- NAVEGACIÓN FECHAS -->
+                <div class="fechas-nav">
+                    <button class="btn-nav" onclick="anteriorDia()" id="btnAnterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="fecha-actual" id="fechaActual">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span id="textoFecha"></span>
                     </div>
-                    <div class="horario-cupos">
-                        <span class="badge-cupos">
-                            <i class="fa-solid fa-user"></i>
-                            <%= d.getCuposOcupados() %>/
-                            <%= d.getCuposTotales() %>
-                        </span>
-                        <% if (d.isDisponible()) { %>
-                            <span class="badge-disponible">
-                                Disponible
-                            </span>
-                        <% } else { %>
-                            <span class="badge-nodisponible">
-                                No disponible
-                            </span>
-                        <% } %>
-                    </div>
-                    <div class="horario-acciones">
-                        <a href="<%= request.getContextPath() 
-                                 %>/admin/horarios?accion=editar&id=<%= d.getIdDisponibilidad() %>"
-                           class="btn-accion btn-editar">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a href="<%= request.getContextPath() 
-                                 %>/admin/horarios?accion=eliminar&id=<%= d.getIdDisponibilidad() %>"
-                           class="btn-accion btn-eliminar"
-                           onclick="return confirm(
-                               '¿Eliminar este horario?')">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-                    </div>
+                    <button class="btn-nav" onclick="siguienteDia()" id="btnSiguiente"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
+
+                <div class="dia-contador" id="diaContador"></div>
+
+                <!-- SLIDES POR DÍA -->
+                <div class="slides-container">
+                    <% int diaIndex = 0; for (String fecha : fechas) { %>
+                    <div class="slide-dia" id="dia_<%= diaIndex %>" style="display: <%= diaIndex == 0 ? "block" : "none" %>;">
+                        <div class="horarios-dia-grid">
+                            <% for (Disponibilidad d : porFecha.get(fecha)) { %>
+                            <div class="horario-item">
+                                <div class="horario-tiempo">
+                                    <i class="fa-regular fa-clock"></i>
+                                    <%= d.getHoraInicio().toString().substring(0,5) %> — <%= d.getHoraFin().toString().substring(0,5) %>
+                                </div>
+                                <div class="horario-cupos">
+                                    <span class="badge-cupos"><i class="fa-solid fa-user"></i> <%= d.getCuposOcupados() %>/<%= d.getCuposTotales() %></span>
+                                    <% if (d.isDisponible()) { %>
+                                        <span class="badge-disponible">Disponible</span>
+                                    <% } else { %>
+                                        <span class="badge-nodisponible">No disponible</span>
+                                    <% } %>
+                                </div>
+                                <div class="horario-acciones">
+                                    <a href="<%= request.getContextPath() %>/admin/horarios?accion=editar&id=<%= d.getIdDisponibilidad() %>" class="btn-accion btn-editar"><i class="fa-solid fa-pen"></i></a>
+                                    <a href="<%= request.getContextPath() %>/admin/horarios?accion=eliminar&id=<%= d.getIdDisponibilidad() %>" class="btn-accion btn-eliminar" onclick="return confirm('¿Eliminar este horario?')"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% diaIndex++; } %>
+                </div>
+
+                <!-- SCRIPT SIMPLIFICADO -->
+                <script>
+                   <%
+    // Generar array de fechas como string JSON
+    String fechasArrayStr = "[";
+    if (fechas != null && !fechas.isEmpty()) {
+        for (int i = 0; i < fechas.size(); i++) {
+            if (i > 0) fechasArrayStr += ",";
+            fechasArrayStr += "'" + fechas.get(i) + "'";
+        }
+    }
+    fechasArrayStr += "]";
+%>
+const fechas = <%= fechasArrayStr %>;
+let diaActual = 0;
+
+                    function mostrarDia(index) {
+                        // Ocultar todos
+                        document.querySelectorAll('.slide-dia').forEach(s => s.style.display = 'none');
+                        
+                        // Mostrar actual
+                        const slide = document.getElementById('dia_' + index);
+                        if (slide) slide.style.display = 'block';
+
+                        // Actualizar texto fecha
+                        if (fechas[index]) {
+                            const fecha = new Date(fechas[index] + 'T00:00:00');
+                            const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            document.getElementById('textoFecha').textContent = fecha.toLocaleDateString('es-CO', opciones);
+                        }
+
+                        // Contador
+                        document.getElementById('diaContador').textContent = 'Día ' + (index + 1) + ' de ' + fechas.length;
+
+                        // Botones
+                        document.getElementById('btnAnterior').disabled = index === 0;
+                        document.getElementById('btnSiguiente').disabled = index === fechas.length - 1;
+                    }
+
+                    function anteriorDia() { if (diaActual > 0) { diaActual--; mostrarDia(diaActual); } }
+                    function siguienteDia() { if (diaActual < fechas.length - 1) { diaActual++; mostrarDia(diaActual); } }
+
+                    function toggleMenu() {
+                        const menu = document.getElementById('dropdownMenu');
+                        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                    }
+
+                    document.addEventListener('click', function(e) {
+                        const menu = document.getElementById('dropdownMenu');
+                        const btn = document.querySelector('.btn-menu');
+                        if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+                            menu.style.display = 'none';
+                        }
+                    });
+
+                    if (fechas.length > 0) mostrarDia(0);
+                </script>
+
+                <% } else { %>
+                    <div class="sin-datos">
+                        <i class="fa-regular fa-calendar-xmark fa-2x"></i>
+                        <br><br>No hay horarios registrados aún.
+                    </div>
                 <% } %>
             </div>
-        </div>
-        <%
-                diaIndex++;
-            }
-        %>
-    </div>
-
-    <% } else { %>
-        <div class="sin-datos">
-            <i class="fa-regular fa-calendar-xmark fa-2x"></i>
-            <br><br>
-            No hay horarios registrados aún.
-        </div>
-    <% } %>
-</div>
         </div>
     </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="footer-sc">
-    <div class="footer-brand">
-        <div class="nombre">SERGIO CALDERÓN</div>
-    </div>
-    <div class="footer-copy">
-        © 2025 SERGIO CALDERÓN. Todos los derechos reservados.
-    </div>
+    <div class="footer-brand"><div class="nombre">SERGIO CALDERÓN</div></div>
+    <div class="footer-copy">© 2025 SERGIO CALDERÓN. Todos los derechos reservados.</div>
 </footer>
-
-<script>
-<%
-    // Pasar fechas a JavaScript
-    StringBuilder fechasJS = new StringBuilder("[");
-    if (lista != null && !lista.isEmpty()) {
-        java.util.Set<String> fechasSet = new java.util.LinkedHashSet<>();
-        for (Disponibilidad d : lista) {
-            fechasSet.add(d.getFecha().toString());
-        }
-        boolean first = true;
-        for (String f : fechasSet) {
-            if (!first) fechasJS.append(",");
-            fechasJS.append("'").append(f).append("'");
-            first = false;
-        }
-    }
-    fechasJS.append("]");
-%>
-const fechas = <%= fechasJS %>;
-let diaActual = 0;
-
-function mostrarDia(index) {
-    // Ocultar todos
-    document.querySelectorAll('.slide-dia').forEach(s => {
-        s.style.display = 'none';
-    });
-    // Mostrar actual
-    const slide = document.getElementById('dia_' + index);
-    if (slide) slide.style.display = 'block';
-
-    // Actualizar texto fecha
-    if (fechas[index]) {
-        const fecha = new Date(fechas[index] + 'T00:00:00');
-        const opciones = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        };
-        document.getElementById('textoFecha').textContent = 
-            fecha.toLocaleDateString('es-CO', opciones);
-    }
-
-    // Contador
-    document.getElementById('diaContador').textContent = 
-        'Día ' + (index + 1) + ' de ' + fechas.length;
-
-    // Botones
-    document.getElementById('btnAnterior').disabled = index === 0;
-    document.getElementById('btnSiguiente').disabled = 
-        index === fechas.length - 1;
-}
-
-function anteriorDia() {
-    if (diaActual > 0) {
-        diaActual--;
-        mostrarDia(diaActual);
-    }
-}
-
-function siguienteDia() {
-    if (diaActual < fechas.length - 1) {
-        diaActual++;
-        mostrarDia(diaActual);
-    }
-}
-
-function toggleMenu() {
-    const menu = document.getElementById('dropdownMenu');
-    if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-    } else {
-        menu.style.display = 'block';
-    }
-}
-document.addEventListener('click', function(e) {
-    const menu = document.getElementById('dropdownMenu');
-    const btn = document.querySelector('.btn-menu');
-    if (menu && btn &&
-        !menu.contains(e.target) &&
-        !btn.contains(e.target)) {
-        menu.style.display = 'none';
-    }
-});
-
-// Inicializar
-if (fechas.length > 0) mostrarDia(0);
-</script>
 
 </body>
 </html>
