@@ -3,19 +3,14 @@
 <%@ page import="com.sergiocalderon.modelo.Cita" %>
 <%@ page import="java.util.List" %>
 <%
-    Usuario usuarioSesion = (Usuario) session.getAttribute(
-        "usuarioSesion");
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
     if (usuarioSesion == null) {
-        response.sendRedirect(request.getContextPath() +
-            "/vistas/auth/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/auth/login");
         return;
     }
-    List<Cita> misCitas = (List<Cita>)
-        request.getAttribute("misCitas");
-    Cita citaEditar = (Cita)
-        request.getAttribute("citaEditar");
-    List<String[]> horariosEditar = (List<String[]>)
-        request.getAttribute("horariosEditar");
+    List<Cita> misCitas = (List<Cita>) request.getAttribute("citas"); // Cambiado de "misCitas" a "citas"
+    Cita citaEditar = (Cita) request.getAttribute("citaEditar");
+    List<String[]> horariosEditar = (List<String[]>) request.getAttribute("horariosEditar");
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -461,11 +456,8 @@
 
 <!-- NAVBAR -->
 <nav class="navbar-sc">
-    <a href="<%= request.getContextPath() 
-             %>/vistas/cliente/dashboard.jsp"
-       class="navbar-brand-sc">
-        <img src="<%= request.getContextPath() %>/img/logo.png"
-             alt="Logo" class="logo-img">
+    <a href="<%= request.getContextPath() %>/cliente/dashboard" class="navbar-brand-sc">
+        <img src="<%= request.getContextPath() %>/img/logo.png" alt="Logo" class="logo-img">
         <div class="brand-text">
             <div class="nombre">SERGIO CALDERÓN</div>
             <div class="subtitulo">Diseñador de Moda</div>
@@ -473,8 +465,7 @@
     </a>
     <div class="navbar-derecha">
         <span class="nombre-usuario">
-            <%= usuarioSesion.getNombre() %>
-            <%= usuarioSesion.getApellido() %>
+            <%= usuarioSesion.getNombre() %> <%= usuarioSesion.getApellido() %>
         </span>
         <button class="btn-menu" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
@@ -484,21 +475,17 @@
 
 <!-- DROPDOWN -->
 <div class="dropdown-menu-sc" id="dropdownMenu">
-    <a href="<%= request.getContextPath() 
-             %>/vistas/cliente/dashboard.jsp">
+    <a href="<%= request.getContextPath() %>/cliente/dashboard">
         <i class="fa-regular fa-user"></i> Perfil
     </a>
-    <a href="<%= request.getContextPath() 
-             %>/cliente/miscitas">
+    <a href="<%= request.getContextPath() %>/cliente/miscitas" class="activo">
         <i class="fa-regular fa-calendar"></i> Mis Citas
     </a>
-    <a href="<%= request.getContextPath() 
-             %>/cliente/cita">
+    <a href="<%= request.getContextPath() %>/cliente/cita">
         <i class="fa-solid fa-calendar-check"></i> Agendar Cita
     </a>
-    <a href="<%= request.getContextPath() %>/logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Cerrar Sesión
+    <a href="<%= request.getContextPath() %>/auth/logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
     </a>
 </div>
 
@@ -508,207 +495,97 @@
         <h1 class="page-titulo">
             <i class="fa-regular fa-calendar"></i> Mis Citas
         </h1>
-        <a href="<%= request.getContextPath() %>/cliente/cita"
-           class="btn-nueva-cita">
-            <i class="fa-regular fa-calendar-plus"></i>
-            Nueva Cita
+        <a href="<%= request.getContextPath() %>/cliente/cita" class="btn-nueva-cita">
+            <i class="fa-regular fa-calendar-plus"></i> Nueva Cita
         </a>
     </div>
 
     <% if (request.getAttribute("error") != null) { %>
         <div class="alert-error">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <%= request.getAttribute("error") %>
+            <i class="fa-solid fa-circle-exclamation"></i> <%= request.getAttribute("error") %>
         </div>
     <% } %>
     <% if (request.getAttribute("exito") != null) { %>
         <div class="alert-exito">
-            <i class="fa-solid fa-circle-check"></i>
-            <%= request.getAttribute("exito") %>
+            <i class="fa-solid fa-circle-check"></i> <%= request.getAttribute("exito") %>
         </div>
     <% } %>
 
     <!-- FILTROS -->
     <div class="filtros">
-        <button class="filtro-btn activo"
-                onclick="filtrar('todas', this)">
-            Todas
-        </button>
-        <button class="filtro-btn"
-                onclick="filtrar('PENDIENTE', this)">
-            Pendientes
-        </button>
-        <button class="filtro-btn"
-                onclick="filtrar('CONFIRMADA', this)">
-            Confirmadas
-        </button>
-        <button class="filtro-btn"
-                onclick="filtrar('COMPLETADA', this)">
-            Completadas
-        </button>
-        <button class="filtro-btn"
-                onclick="filtrar('CANCELADA', this)">
-            Canceladas
-        </button>
+        <button class="filtro-btn activo" onclick="filtrar('todas', this)">Todas</button>
+        <button class="filtro-btn" onclick="filtrar('PENDIENTE', this)">Pendientes</button>
+        <button class="filtro-btn" onclick="filtrar('CONFIRMADA', this)">Confirmadas</button>
+        <button class="filtro-btn" onclick="filtrar('COMPLETADA', this)">Completadas</button>
+        <button class="filtro-btn" onclick="filtrar('CANCELADA', this)">Canceladas</button>
     </div>
 
     <!-- GRID DE CITAS -->
-    <div class="citas-grid" id="citasGrid">
-        <% if (misCitas != null && !misCitas.isEmpty()) { %>
-            <% for (Cita c : misCitas) { %>
-            <div class="cita-card <%= c.getEstado()
-                                       .toLowerCase() %>"
-                 data-estado="<%= c.getEstado() %>">
+<!-- GRID DE CITAS -->
+<div class="citas-grid" id="citasGrid">
+    <% if (misCitas != null && !misCitas.isEmpty()) { %>
+        <% for (Cita c : misCitas) { 
+            String estadoLower = c.getEstado().toLowerCase();
+        %>
+        <div class="cita-card <%= estadoLower %>" data-estado="<%= c.getEstado() %>">
+            <div class="cita-fecha">
+                <i class="fa-regular fa-calendar"></i> <%= c.getFechaCita() %>
+            </div>
+            <div class="cita-hora">
+                <i class="fa-regular fa-clock"></i>
+                <%= c.getHoraInicio().toString().substring(0,5) %> —
+                <%= c.getHoraFin().toString().substring(0,5) %>
+            </div>
 
-                <div class="cita-fecha">
-                    <i class="fa-regular fa-calendar"></i>
-                    <%= c.getFechaCita() %>
-                </div>
-                <div class="cita-hora">
-                    <i class="fa-regular fa-clock"></i>
-                    <%= c.getHoraInicio().toString()
-                         .substring(0,5) %> —
-                    <%= c.getHoraFin().toString()
-                         .substring(0,5) %>
-                </div>
+            <span class="estado-badge estado-<%= c.getEstado() %>">
+                <%= c.getEstado() %>
+            </span>
 
-                <span class="estado-badge estado-<%= c.getEstado() %>">
-                    <%= c.getEstado() %>
-                </span>
-
-                <div class="cita-info">
-                    <i class="fa-solid fa-tag"></i>
-                    <span><%= c.getTipoEvento() %></span>
-                </div>
-                <% if (c.getMotivoCita() != null && 
-                       !c.getMotivoCita().isEmpty()) { %>
-                <div class="cita-info">
-                    <i class="fa-regular fa-comment"></i>
-                    <span><%= c.getMotivoCita().length() > 60 ?
-                        c.getMotivoCita().substring(0,60) + "..." :
-                        c.getMotivoCita() %></span>
-                </div>
-                <% } %>
-
-                <!-- Acciones solo si está PENDIENTE -->
-                <% if ("PENDIENTE".equals(c.getEstado())) { %>
-                <div class="cita-acciones">
-                    <button class="btn-accion btn-editar"
-                            onclick="abrirModal(
-                                '<%= c.getIdCita() %>',
-                                '<%= c.getFechaCita() %>',
-                                '<%= c.getHoraInicio()
-                                      .toString()
-                                      .substring(0,5) %>',
-                                '<%= c.getTipoEvento() %>',
-                                '<%= c.getMotivoCita() != null ?
-                                     c.getMotivoCita()
-                                      .replace("'", "\\'") : "" %>'
-                            )">
-                        <i class="fa-solid fa-pen"></i> Modificar
-                    </button>
-                    <a href="<%= request.getContextPath() 
-                             %>/cliente/miscitas?accion=cancelar&id=<%= c.getIdCita() %>"
-                       class="btn-accion btn-cancelar"
-                       onclick="return confirm(
-                           '¿Seguro que deseas cancelar esta cita?')">
-                        <i class="fa-solid fa-xmark"></i> Cancelar
-                    </a>
-                </div>
-                <% } %>
+            <div class="cita-info">
+                <i class="fa-solid fa-tag"></i>
+                <span><%= c.getTipoEvento() %></span>
+            </div>
+            <% if (c.getMotivoCita() != null && !c.getMotivoCita().isEmpty()) { %>
+            <div class="cita-info">
+                <i class="fa-regular fa-comment"></i>
+                <span><%= c.getMotivoCita().length() > 60 ? c.getMotivoCita().substring(0,60) + "..." : c.getMotivoCita() %></span>
             </div>
             <% } %>
-        <% } else { %>
-            <div class="sin-citas">
-                <i class="fa-regular fa-calendar-xmark"></i>
-                <p>No tienes citas registradas aún.</p>
-                <a href="<%= request.getContextPath() 
-                         %>/cliente/cita"
-                   class="btn-nueva-cita"
-                   style="display:inline-flex; margin-top:15px">
-                    <i class="fa-regular fa-calendar-plus"></i>
-                    Agendar mi primera cita
+
+            <!-- Acciones solo si está PENDIENTE -->
+            <% if ("PENDIENTE".equals(c.getEstado())) { %>
+            <div class="cita-acciones">
+                <button class="btn-accion btn-editar"
+                        onclick="abrirModal(
+                            '<%= c.getIdCita() %>',
+                            '<%= c.getFechaCita() %>',
+                            '<%= c.getHoraInicio().toString().substring(0,5) %>',
+                            '<%= c.getHoraFin().toString().substring(0,5) %>',
+                            '<%= c.getTipoEvento() %>',
+                            '<%= c.getMotivoCita() != null ? c.getMotivoCita().replace("'", "\\'") : "" %>'
+                        )">
+                    <i class="fa-solid fa-pen"></i> Modificar
+                </button>
+                <a href="<%= request.getContextPath() %>/cliente/cancelarCita?id=<%= c.getIdCita() %>"
+                   class="btn-accion btn-cancelar"
+                   onclick="return confirm('¿Seguro que deseas cancelar esta cita?')">
+                    <i class="fa-solid fa-xmark"></i> Cancelar
                 </a>
             </div>
+            <% } %>
+        </div>
         <% } %>
-    </div>
+    <% } else { %>
+        <div class="sin-citas">
+            <i class="fa-regular fa-calendar-xmark fa-3x"></i>
+            <p>No tienes citas registradas aún.</p>
+            <a href="<%= request.getContextPath() %>/cliente/cita" class="btn-nueva-cita" style="display:inline-flex; margin-top:15px">
+                <i class="fa-regular fa-calendar-plus"></i> Agendar mi primera cita
+            </a>
+        </div>
+    <% } %>
 </div>
 
-<!-- MODAL EDITAR CITA -->
-<div class="modal-overlay" id="modalEditar">
-    <div class="modal-sc">
-        <div class="modal-titulo">
-            <span>
-                <i class="fa-solid fa-pen"></i> Modificar Cita
-            </span>
-            <button class="btn-cerrar-modal"
-                    onclick="cerrarModal()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <form method="post"
-              action="<%= request.getContextPath() 
-                       %>/cliente/miscitas">
-            <input type="hidden" name="accion" value="modificar">
-            <input type="hidden" name="idCita" id="modalIdCita">
-            <input type="hidden" name="idDisponibilidad"
-                   id="modalIdDisp">
-            <input type="hidden" name="horaInicio"
-                   id="modalHoraInicio">
-            <input type="hidden" name="horaFin"
-                   id="modalHoraFin">
-            <input type="hidden" name="tipoEvento"
-                   id="modalTipoEvento" value="BODA">
-
-            <label class="form-label-sc">Nueva fecha</label>
-            <input type="date" name="fecha" id="modalFecha"
-                   class="form-control-sc"
-                   min="<%= java.time.LocalDate.now()
-                            .plusDays(1) %>"
-                   onchange="cargarHorariosModal(this.value)">
-
-            <label class="form-label-sc">
-                Horarios disponibles
-            </label>
-            <div class="horarios-modal" id="horariosModal">
-                <div style="color:#999; font-size:0.82rem;
-                            grid-column:1/-1; text-align:center;
-                            padding:10px;">
-                    Selecciona una fecha primero
-                </div>
-            </div>
-
-            <label class="form-label-sc">Tipo de evento</label>
-            <div class="tipo-grupo">
-                <button type="button" class="tipo-opt seleccionado"
-                        onclick="seleccionarTipoModal('BODA',this)">
-                    Boda
-                </button>
-                <button type="button" class="tipo-opt"
-                        onclick="seleccionarTipoModal('FIESTA',this)">
-                    Fiesta
-                </button>
-                <button type="button" class="tipo-opt"
-                        onclick="seleccionarTipoModal('QUINCE',this)">
-                    Quince
-                </button>
-                <button type="button" class="tipo-opt"
-                        onclick="seleccionarTipoModal('OTRO',this)">
-                    Otro
-                </button>
-            </div>
-
-            <label class="form-label-sc">Motivo</label>
-            <textarea name="motivoCita" id="modalMotivo"
-                      class="form-control-sc" rows="3"></textarea>
-
-            <button type="submit" class="btn-guardar-modal">
-                <i class="fa-solid fa-floppy-disk"></i>
-                Guardar Cambios
-            </button>
-        </form>
-    </div>
 </div>
 
 <!-- FOOTER -->
@@ -725,28 +602,23 @@
 // DROPDOWN MENÚ
 function toggleMenu() {
     const menu = document.getElementById('dropdownMenu');
-    menu.style.display =
-        menu.style.display === 'block' ? 'none' : 'block';
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
 document.addEventListener('click', function(e) {
     const menu = document.getElementById('dropdownMenu');
     const btn = document.querySelector('.btn-menu');
-    if (menu && btn &&
-        !menu.contains(e.target) &&
-        !btn.contains(e.target)) {
+    if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
         menu.style.display = 'none';
     }
 });
 
 // FILTRAR CITAS
 function filtrar(estado, btn) {
-    document.querySelectorAll('.filtro-btn').forEach(b =>
-        b.classList.remove('activo'));
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
     btn.classList.add('activo');
 
     document.querySelectorAll('.cita-card').forEach(card => {
-        if (estado === 'todas' ||
-            card.dataset.estado === estado) {
+        if (estado === 'todas' || card.dataset.estado === estado) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';
@@ -754,96 +626,13 @@ function filtrar(estado, btn) {
     });
 }
 
-// MODAL
-function abrirModal(idCita, fecha, hora, tipo, motivo) {
-    document.getElementById('modalIdCita').value = idCita;
-    document.getElementById('modalFecha').value = fecha;
-    document.getElementById('modalMotivo').value = motivo;
-    document.getElementById('modalTipoEvento').value = tipo;
-
-    // Marcar tipo activo
-    document.querySelectorAll('.tipo-opt').forEach(b => {
-        b.classList.remove('seleccionado');
-        if (b.textContent.trim().toUpperCase() === tipo ||
-            b.onclick.toString().includes("'" + tipo + "'")) {
-            b.classList.add('seleccionado');
-        }
-    });
-
-    document.getElementById('modalEditar')
-            .classList.add('activo');
-    cargarHorariosModal(fecha);
+// MODAL PARA MODIFICAR CITA
+function abrirModal(idCita, fecha, horaInicio, horaFin, tipo, motivo) {
+    // Implementar según necesites
+    alert('Función de modificar cita - ID: ' + idCita + ', Fecha: ' + fecha);
+    // Aquí iría la lógica para abrir un modal o redirigir a una página de modificación
 }
-
-function cerrarModal() {
-    document.getElementById('modalEditar')
-            .classList.remove('activo');
-}
-
-function seleccionarTipoModal(tipo, btn) {
-    document.querySelectorAll('.tipo-opt').forEach(b =>
-        b.classList.remove('seleccionado'));
-    btn.classList.add('seleccionado');
-    document.getElementById('modalTipoEvento').value = tipo;
-}
-
-function cargarHorariosModal(fecha) {
-    if (!fecha) return;
-    const contenedor = document.getElementById('horariosModal');
-    contenedor.innerHTML = '<div style="color:#999;font-size:0.82rem;grid-column:1/-1;text-align:center;padding:10px;">Cargando...</div>';
-
-    fetch('<%= request.getContextPath() %>/cliente/cita?fecha=' + fecha)
-        .then(res => res.text())
-        .then(html => {
-            // Extraer horarios del HTML retornado
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const botones = doc.querySelectorAll('.horario-btn');
-
-            if (botones.length === 0) {
-                contenedor.innerHTML = '<div style="color:#999;font-size:0.82rem;grid-column:1/-1;text-align:center;padding:10px;">No hay horarios disponibles</div>';
-                return;
-            }
-
-            contenedor.innerHTML = '';
-            botones.forEach(btn => {
-                const onclick = btn.getAttribute('onclick');
-                const match = onclick.match(
-                    /seleccionarHorario\('(.+?)','(.+?)','(.+?)'\)/);
-                if (match) {
-                    const [_, idDisp, hIni, hFin] = match;
-                    const opt = document.createElement('button');
-                    opt.type = 'button';
-                    opt.className = 'horario-opt';
-                    opt.textContent =
-                        hIni.substring(0,5) + ' - ' +
-                        hFin.substring(0,5);
-                    opt.onclick = function() {
-                        document.querySelectorAll('.horario-opt')
-                            .forEach(b =>
-                                b.classList.remove('seleccionado'));
-                        this.classList.add('seleccionado');
-                        document.getElementById(
-                            'modalIdDisp').value = idDisp;
-                        document.getElementById(
-                            'modalHoraInicio').value = hIni;
-                        document.getElementById(
-                            'modalHoraFin').value = hFin;
-                    };
-                    contenedor.appendChild(opt);
-                }
-            });
-        })
-        .catch(() => {
-            contenedor.innerHTML = '<div style="color:#c0392b;font-size:0.82rem;grid-column:1/-1;text-align:center;padding:10px;">Error cargando horarios</div>';
-        });
-}
-
-// Cerrar modal al hacer clic fuera
-document.getElementById('modalEditar')
-    .addEventListener('click', function(e) {
-        if (e.target === this) cerrarModal();
-    });
 </script>
+
 </body>
 </html>

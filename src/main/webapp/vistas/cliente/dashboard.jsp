@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.sergiocalderon.modelo.Usuario" %>
 <%
-    Usuario usuarioSesion = (Usuario) session.getAttribute("usuarioSesion");
-    if (usuarioSesion == null || 
-        !usuarioSesion.getTipoUsuario().equals("CLIENTE")) {
-        response.sendRedirect(request.getContextPath() + 
-            "/vistas/auth/login.jsp");
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
+    if (usuarioSesion == null) {
+        response.sendRedirect(request.getContextPath() + "/auth/login");
         return;
     }
 %>
@@ -401,7 +399,7 @@
     <a href="<%= request.getContextPath() %>/cliente/miscitas">
         <i class="fa-solid fa-calendar-check"></i> Gestión de Citas
     </a>
-    <a href="<%= request.getContextPath() %>/logout">
+    <a href="<%= request.getContextPath() %>/auth/logout">
         <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
     </a>
 </div>

@@ -2,11 +2,10 @@
 <%@ page import="com.sergiocalderon.modelo.Usuario" %>
 <%@ page import="java.util.List" %>
 <%
-    Usuario usuarioSesion = (Usuario) session.getAttribute(
-        "usuarioSesion");
+    Usuario usuarioSesion = (Usuario) session.getAttribute("usuario");
     if (usuarioSesion == null) {
         response.sendRedirect(request.getContextPath() + 
-            "/vistas/auth/login.jsp");
+            "/auth/login");
         return;
     }
     List<String[]> horarios = (List<String[]>) 
