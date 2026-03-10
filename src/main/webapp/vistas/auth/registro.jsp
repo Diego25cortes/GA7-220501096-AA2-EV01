@@ -231,7 +231,7 @@
             <div class="subtitulo">Diseñador de Moda</div>
         </div>
     </a>
-    <a href="<%= request.getContextPath() %>/vistas/auth/login.jsp"
+    <a href="<%= request.getContextPath() %>/auth/login"
        class="btn-volver">← Iniciar Sesión</a>
 </nav>
 
@@ -253,13 +253,13 @@
                 <div class="alert-exito">
                     <%= request.getAttribute("exito") %>
                     <br><a href="<%= request.getContextPath() 
-                    %>/vistas/auth/login.jsp">
+                    %>/auth/login">
                         Ir al login →
                     </a>
                 </div>
             <% } %>
 
-            <form action="<%= request.getContextPath() %>/registro"
+            <form action="<%= request.getContextPath() %>/auth/registro"
                   method="post">
 
                 <div class="fila-dos">
@@ -320,7 +320,7 @@
             <div class="link-login">
                 ¿Ya tienes cuenta?
                 <a href="<%= request.getContextPath() 
-                          %>/vistas/auth/login.jsp">
+                          %>/auth/login">
                     Inicia sesión aquí
                 </a>
             </div>
